@@ -295,7 +295,7 @@ function createCard(upgrade) {
     } else if (upgrade.multiplier) {
         header.textContent = `${upgrade.name}, ${upgrade.description}${(1+upgrade.multiplier)*100}%.`;
     } else {
-        header.textContent = `${upgrade.name}, ${upgrade.description}${Math.round((1+upgrade.multiPositive)*100)}%, current price reduction is ${Math.round((1+upgrade.multiPositive)*100)}%.`;
+        header.textContent = `${upgrade.name}, ${upgrade.description}${Math.round((1+upgrade.multiPositive)*100)}%.`;
     }
     cost.textContent = `Köp för ${upgrade.cost} Guld.`;
 

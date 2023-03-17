@@ -21,7 +21,7 @@ Trinkets, perma. effects
     Potion Belt - check
         Potion effects duration increase with x seconds.
 
-    Wabuu Keychain -
+    Wabuu Keychain - check (partially)
         Multiplies positive effects with 1.01.
         Reduces shop prices with 1.01.
         Secondary purchases after the first increases these valeus with 0.01.
@@ -32,7 +32,7 @@ Trinkets, perma. effects
         Secondary purchases after the first reduces the cooldown.
 
     Twitching Tentacle -
-        Clicks once per second.
+        Adds a very safe for work tentacle to the counter, it clicks once per second.
         secondary purchases increases the amount of times it clicks per second.
 
 
@@ -43,13 +43,13 @@ Shop upgrades, stat upgrades
         +1 per click.
 
     Incense Ingredients - Check
-        +10 per second.
+        +1 per second.
 
     Quality Cauldrons - Check
-        + 100 per second.
+        + 10 per second.
 
     Furnace upgradde - Check
-        + 1000 per second.
+        + 100 per second.
 
 
 ---
@@ -61,4 +61,8 @@ Achivements
 ---
 To Do List
 ---
+Byt ut bilder.
+Stylea text och färger.
 Lägg till upgradering för Potions och trinkets.
+Fixa till Acvhivements.
+Balancing^2.
