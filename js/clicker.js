@@ -25,7 +25,7 @@ const audioAchievement = document.querySelector('#swoosh');
  * värden, utan då använder vi let.
  * Läs mer: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let
  */
-let money = 0;
+let money = 100;
 let moneyPerClick = 1;
 let currentMoneyPerClick = 1;
 let clickMultiplier = 0;
@@ -106,7 +106,7 @@ clickerButton.addEventListener(
 function step(timestamp) {
     moneyTracker.textContent = Math.round(money);
     mpsTracker.textContent = moneyPerSecond;
-    mpcTracker.textContent = moneyPerClick;
+    mpcTracker.textContent = currentMoneyPerClick;
     upgradesTracker.textContent = acquiredUpgrades;
 
     if (timestamp >= last + 1000) {
@@ -244,6 +244,16 @@ upgrades = [
         cost: 1,
         effectActive: false,
         durationIncrease: 3, // in seconds
+    },
+    {
+        name: 'Wabuu Keychain',
+        description: '',
+        cost: 1,
+        effectActive: false,
+        multiPositive: 0.01,
+        currentMultiPositive: 0,
+        priceReduc: 0.01,
+        currentPriceReduc: 0,
     }
 ];
 
@@ -281,8 +291,10 @@ function createCard(upgrade) {
         header.textContent = `${upgrade.name}, ${upgrade.description} current click buff is +${upgrade.adder}.`;
     } else if (upgrade.durationIncrease) {
         header.textContent = `${upgrade.name}, ${upgrade.description} current potion duration buff is +${upgrade.durationIncrease} seconds.`;
-    } else {
+    } else if (upgrade.multiplier) {
         header.textContent = `${upgrade.name}, ${upgrade.description} current click multiplier is ${1+upgrade.multiplier}x.`;
+    } else {
+        header.textContent = `${upgrade.name}, ${upgrade.description}  hallo crigne lord, nuke me! ${1+upgrade.multiplier}x.`;
     }
     cost.textContent = `Köp för ${upgrade.cost} Guld.`;
 
@@ -304,9 +316,18 @@ function createCard(upgrade) {
                 for (let i = 0; i < upgrades.length; i++) {
                     upgrades[i].duration = upgrades[i].duration + upgrade.durationIncrease*60;
                 }
+            } else if (upgrade.multiPositive) {
+                upgrade.currentMultiPositive = upgrade.multiPositive + upgrade.currentMultiPositive;
+                upgrade.currentPriceReduc = upgrade.priceReduc + upgrade.currentPriceReduc;
+                for (let i = 0; i < upgrades.length; i++) {
+                    upgrades[i].duration = upgrades[i].duration * (1+upgrade.currentMultiPositive);
+                    upgrades[i].cost -= upgrades[i].cost * upgrade.currentPriceReduc;
+                }
+                console.log(upgrade.currentMultiPositive);
+                console.log(upgrade.currentPriceReduc);
             } else {
                 moneyPerSecond += upgrade.amount ? upgrade.amount : 0;
-                moneyPerClick += upgrade.clicks ? upgrade.clicks : 0;
+                currentMoneyPerClick += upgrade.clicks ? upgrade.clicks : 0;
             }
             acquiredUpgrades++;
             money -= upgrade.cost;
