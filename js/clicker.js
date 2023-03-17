@@ -16,6 +16,8 @@ const upgradeList = document.querySelector('#upgradelist');
 const msgbox = document.querySelector('#msgbox');
 const audioAchievement = document.querySelector('#swoosh');
 
+
+
 /* Följande variabler använder vi för att hålla reda på hur mycket pengar som
  * spelaren, har och tjänar.
  * last används för att hålla koll på tiden.
@@ -25,11 +27,18 @@ const audioAchievement = document.querySelector('#swoosh');
  */
 let money = 0;
 let moneyPerClick = 1;
+let currentMoneyPerClick = 1;
+let clickMultiplier = 0;
 let moneyPerSecond = 0;
 let acquiredUpgrades = 0;
 let last = 0;
 let numberOfClicks = 0; // hur många gånger har spelare eg. klickat
 let active = false; // exempel för att visa att du kan lägga till klass för att indikera att spelare får valuta
+let SpicyTonicActive = false;
+//let SpicyTonicMultiplier = 1;
+//let duration = 1000;
+
+
 
 // likt upgrades skapas här en array med objekt som innehåller olika former
 // av achievements.
@@ -58,6 +67,8 @@ let achievements = [
     },
 ];
 
+
+
 /* Med ett valt element, som knappen i detta fall så kan vi skapa listeners
  * med addEventListener så kan vi lyssna på ett specifikt event på ett html-element
  * som ett klick.
@@ -68,17 +79,20 @@ let achievements = [
  * money.
  * Läs mer: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
  */
+
 clickerButton.addEventListener(
     'click',
     () => {
         // vid click öka score med moneyPerClick
-        money += moneyPerClick;
+        money += currentMoneyPerClick * (1+currentClickMultiplier);
         // håll koll på hur många gånger spelaren klickat
         numberOfClicks += 1;
         // console.log(clicker.score);
     },
     false
 );
+
+
 
 /* För att driva klicker spelet så kommer vi att använda oss av en metod som heter
  * requestAnimationFrame.
@@ -104,6 +118,24 @@ function step(timestamp) {
         mpsTracker.classList.add('active');
         active = true;
     }
+
+    if (upgrades[4].effectActive && upgrades[4].activeDuration > 0) {
+        currentClickMultiplier = upgrades[4].multiplier;
+    } else {
+        currentClickMultiplier = clickMultiplier;
+    }
+
+    for (let i = 0; i < upgrades.length; i++) {
+        if (upgrades[i].effectActive && upgrades[i].activeDuration > 0) {
+            upgrades[i].activeDuration--;
+            console.log(upgrades[i].activeDuration);
+        } else {
+            upgrades[i].activeDuration = upgrades[i].duration;
+            upgrades[i].effectActive = false;
+        }
+    }
+
+
 
     // achievements, utgår från arrayen achievements med objekt
     // koden nedan muterar (ändrar) arrayen och tar bort achievements
@@ -136,6 +168,8 @@ function step(timestamp) {
     window.requestAnimationFrame(step);
 }
 
+
+
 /* Här använder vi en listener igen. Den här gången så lyssnar iv efter window
  * objeket och när det har laddat färdigt webbsidan(omvandlat html till dom)
  * När detta har skett så skapar vi listan med upgrades, för detta använder vi
@@ -163,26 +197,57 @@ window.addEventListener('load', (event) => {
  */
 upgrades = [
     {
-        name: 'Sop',
+        name: 'Better Bottles',
+        description: '',
         cost: 10,
         amount: 1,
     },
     {
-        name: 'Kvalitetsspade',
-        cost: 50,
+        name: 'Incense Ingredients',
+        description: '',
+        cost: 1,
         clicks: 2,
     },
     {
-        name: 'Skottkärra',
+        name: 'Quality Cauldrons',
+        description: '',
         cost: 100,
         amount: 10,
     },
     {
-        name: 'Grävmaskin',
+        name: 'Furnace upgrade',
+        description: '',
         cost: 1000,
         amount: 100,
     },
+    {
+        name: 'Spicy Tonic',
+        description: 'Multiplies clicks for a short duration.',
+        cost: 1,
+        duration: 300,
+        activeDuration: 0,
+        effectActive: false,
+        multiplier: 0.1,
+    },
+    {
+        name: 'Stoutness Potion',
+        description: 'Adds clciks for a short duration.',
+        cost: 1,
+        duration: 600,
+        activeDuration: 0,
+        effectActive: false,
+        adder: 3,
+    },
+    {
+        name: 'Potion Belt',
+        description: 'Potion effects duration increase with x seconds.',
+        cost: 1,
+        effectActive: false,
+        durationIncrease: 3, // in seconds
+    }
 ];
+
+
 
 /* createCard är en funktion som tar ett upgrade objekt som parameter och skapar
  * ett html kort för det.
@@ -210,21 +275,46 @@ function createCard(upgrade) {
     const cost = document.createElement('p');
     if (upgrade.amount) {
         header.textContent = `${upgrade.name}, +${upgrade.amount} per sekund.`;
-    } else {
+    } else if (upgrade.clicks) {
         header.textContent = `${upgrade.name}, +${upgrade.clicks} per klick.`;
+    } else if (upgrade.adder){
+        header.textContent = `${upgrade.name}, ${upgrade.description} current click buff is +${upgrade.adder}.`;
+    } else if (upgrade.durationIncrease) {
+        header.textContent = `${upgrade.name}, ${upgrade.description} current potion duration buff is +${upgrade.durationIncrease} seconds.`;
+    } else {
+        header.textContent = `${upgrade.name}, ${upgrade.description} current click multiplier is ${1+upgrade.multiplier}x.`;
     }
-    cost.textContent = `Köp för ${upgrade.cost} benbitar.`;
+    cost.textContent = `Köp för ${upgrade.cost} Guld.`;
 
     card.addEventListener('click', (e) => {
         if (money >= upgrade.cost) {
+            if (upgrade.duration) {
+                /*for (let i = 0; i < upgrades.length; i++) {
+                    upgrades[i].effectActive = true;
+                }*/
+                if (upgrade.multiplier) {
+                    upgrade.effectActive = true;
+                }
+                if (upgrade.adder) {
+                    currentMoneyPerClick = moneyPerClick + upgrade.adder;
+                    upgrade.effectActive = true;
+                }
+                upgrades.activeDuration = upgrades.duration;
+            } else if (upgrade.durationIncrease) {
+                for (let i = 0; i < upgrades.length; i++) {
+                    upgrades[i].duration = upgrades[i].duration + upgrade.durationIncrease*60;
+                }
+            } else {
+                moneyPerSecond += upgrade.amount ? upgrade.amount : 0;
+                moneyPerClick += upgrade.clicks ? upgrade.clicks : 0;
+            }
             acquiredUpgrades++;
             money -= upgrade.cost;
             upgrade.cost *= 1.5;
-            cost.textContent = 'Köp för ' + upgrade.cost + ' benbitar';
-            moneyPerSecond += upgrade.amount ? upgrade.amount : 0;
-            moneyPerClick += upgrade.clicks ? upgrade.clicks : 0;
+            cost.textContent = 'Köp för ' + upgrade.cost + ' Guld';
             message('Grattis du har köpt en uppgradering!', 'success');
-        } else {
+        }
+         else {
             message('Du har inte råd.', 'warning');
         }
     });
@@ -233,6 +323,8 @@ function createCard(upgrade) {
     card.appendChild(cost);
     return card;
 }
+
+
 
 /* Message visar hur vi kan skapa ett html element och ta bort det.
  * appendChild används för att lägga till och removeChild för att ta bort.
