@@ -28,6 +28,7 @@ const audioAchievement = document.querySelector('#swoosh');
 let money = 100;
 let moneyPerClick = 1;
 let currentMoneyPerClick = 1;
+let currentClickMultiplier = 0;
 let clickMultiplier = 0;
 let moneyPerSecond = 0;
 let acquiredUpgrades = 0;
@@ -119,7 +120,7 @@ function step(timestamp) {
         active = true;
     }
 
-    if (upgrades[4].effectActive && upgrades[4].activeDuration > 0) {
+    if (upgrades[4].effectActive && upgrades[4].activeDuration != 0) {
         currentClickMultiplier = upgrades[4].multiplier;
     } else {
         currentClickMultiplier = clickMultiplier;
@@ -197,21 +198,21 @@ window.addEventListener('load', (event) => {
  */
 upgrades = [
     {
+        name: 'Incense Ingredients',
+        description: '',
+        cost: 1,
+        clicks: 1,
+    },
+    {
         name: 'Better Bottles',
         description: '',
         cost: 10,
         amount: 1,
     },
     {
-        name: 'Incense Ingredients',
-        description: '',
-        cost: 1,
-        clicks: 2,
-    },
-    {
         name: 'Quality Cauldrons',
         description: '',
-        cost: 100,
+        cost: 10,
         amount: 10,
     },
     {
@@ -222,7 +223,7 @@ upgrades = [
     },
     {
         name: 'Spicy Tonic',
-        description: 'Multiplies clicks for a short duration.',
+        description: 'Multiplies clicks for a short duration.  Current click multiplier is ',
         cost: 1,
         duration: 300,
         activeDuration: 0,
@@ -231,7 +232,7 @@ upgrades = [
     },
     {
         name: 'Stoutness Potion',
-        description: 'Adds clciks for a short duration.',
+        description: 'Boosts clicks for a short duration.  Current click buff is +',
         cost: 1,
         duration: 600,
         activeDuration: 0,
@@ -240,14 +241,14 @@ upgrades = [
     },
     {
         name: 'Potion Belt',
-        description: 'Potion effects duration increase with x seconds.',
+        description: 'Potion effects duration increased. Current potion duration buff is +',
         cost: 1,
         effectActive: false,
         durationIncrease: 3, // in seconds
     },
     {
         name: 'Wabuu Keychain',
-        description: '',
+        description: 'Increases positive effects and reduces shop prices with 1%. Current buff is ',
         cost: 1,
         effectActive: false,
         multiPositive: 0.01,
@@ -288,13 +289,13 @@ function createCard(upgrade) {
     } else if (upgrade.clicks) {
         header.textContent = `${upgrade.name}, +${upgrade.clicks} per klick.`;
     } else if (upgrade.adder){
-        header.textContent = `${upgrade.name}, ${upgrade.description} current click buff is +${upgrade.adder}.`;
+        header.textContent = `${upgrade.name}, ${upgrade.description}${upgrade.adder} clicks.`;
     } else if (upgrade.durationIncrease) {
-        header.textContent = `${upgrade.name}, ${upgrade.description} current potion duration buff is +${upgrade.durationIncrease} seconds.`;
+        header.textContent = `${upgrade.name}, ${upgrade.description}${upgrade.durationIncrease} seconds.`;
     } else if (upgrade.multiplier) {
-        header.textContent = `${upgrade.name}, ${upgrade.description} current click multiplier is ${1+upgrade.multiplier}x.`;
+        header.textContent = `${upgrade.name}, ${upgrade.description}${(1+upgrade.multiplier)*100}%.`;
     } else {
-        header.textContent = `${upgrade.name}, ${upgrade.description}  hallo crigne lord, nuke me! ${1+upgrade.multiplier}x.`;
+        header.textContent = `${upgrade.name}, ${upgrade.description}${Math.round((1+upgrade.multiPositive)*100)}%, current price reduction is ${Math.round((1+upgrade.multiPositive)*100)}%.`;
     }
     cost.textContent = `Köp för ${upgrade.cost} Guld.`;
 
