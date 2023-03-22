@@ -85,7 +85,7 @@ clickerButton.addEventListener(
     'click',
     () => {
         // vid click öka score med moneyPerClick
-        money += currentMoneyPerClick * (1+currentClickMultiplier);
+        money += Math.ceil(currentMoneyPerClick * (1+currentClickMultiplier));
         // håll koll på hur många gånger spelaren klickat
         numberOfClicks += 1;
         // console.log(clicker.score);
@@ -129,7 +129,7 @@ function step(timestamp) {
     for (let i = 0; i < upgrades.length; i++) {
         if (upgrades[i].effectActive && upgrades[i].activeDuration > 0) {
             upgrades[i].activeDuration--;
-            console.log(upgrades[i].activeDuration);
+            //console.log(upgrades[i].activeDuration);
         } else {
             upgrades[i].activeDuration = upgrades[i].duration;
             upgrades[i].effectActive = false;
@@ -183,11 +183,19 @@ function step(timestamp) {
  * Efter det så kallas requestAnimationFrame och spelet är igång.
  */
 window.addEventListener('load', (event) => {
+    createUpgrades();
+    /*upgrades.forEach((upgrade) => {
+        upgradeList.appendChild(createCard(upgrade));
+    });*/
+    window.requestAnimationFrame(step);
+});
+
+const createUpgrades = () => {
+    upgradeList.innerHTML = "";
     upgrades.forEach((upgrade) => {
         upgradeList.appendChild(createCard(upgrade));
     });
-    window.requestAnimationFrame(step);
-});
+}
 
 /* En array med upgrades. Varje upgrade är ett objekt med egenskaperna name, cost
  * och amount. Önskar du ytterligare text eller en bild så går det utmärkt att
@@ -244,7 +252,7 @@ upgrades = [
         description: 'Potion effects duration increased. Current potion duration buff is +',
         cost: 1,
         effectActive: false,
-        durationIncrease: 3, // in seconds
+        durationIncrease: 1, // in seconds
     },
     {
         name: 'Wabuu Keychain',
@@ -293,29 +301,33 @@ function createCard(upgrade) {
     } else if (upgrade.durationIncrease) {
         header.textContent = `${upgrade.name}, ${upgrade.description}${upgrade.durationIncrease} seconds.`;
     } else if (upgrade.multiplier) {
-        header.textContent = `${upgrade.name}, ${upgrade.description}${(1+upgrade.multiplier)*100}%.`;
+        header.textContent = `${upgrade.name}, ${upgrade.description}${Math.round((1+upgrade.multiplier)*100)}%.`;
     } else {
-        header.textContent = `${upgrade.name}, ${upgrade.description}${Math.round((1+upgrade.multiPositive)*100)}%.`;
+        header.textContent = `${upgrade.name}, ${upgrade.description}${Math.ceil((1+upgrade.currentMultiPositive)*100)}%.`;
     }
     cost.textContent = `Köp för ${upgrade.cost} Guld.`;
 
     card.addEventListener('click', (e) => {
         if (money >= upgrade.cost) {
+            
             if (upgrade.duration) {
                 /*for (let i = 0; i < upgrades.length; i++) {
                     upgrades[i].effectActive = true;
                 }*/
                 if (upgrade.multiplier) {
                     upgrade.effectActive = true;
+                    console.log(upgrade.multiplier);
                 }
                 if (upgrade.adder) {
                     currentMoneyPerClick = moneyPerClick + upgrade.adder;
                     upgrade.effectActive = true;
+                    console.log(currentMoneyPerClick);
                 }
                 upgrades.activeDuration = upgrades.duration;
             } else if (upgrade.durationIncrease) {
                 for (let i = 0; i < upgrades.length; i++) {
                     upgrades[i].duration = upgrades[i].duration + upgrade.durationIncrease*60;
+                    console.log(upgrades[i].duration);
                 }
             } else if (upgrade.multiPositive) {
                 upgrade.currentMultiPositive = upgrade.multiPositive + upgrade.currentMultiPositive;
@@ -325,7 +337,6 @@ function createCard(upgrade) {
                     upgrades[i].cost -= upgrades[i].cost * upgrade.currentPriceReduc;
                 }
                 console.log(upgrade.currentMultiPositive);
-                console.log(upgrade.currentPriceReduc);
             } else {
                 moneyPerSecond += upgrade.amount ? upgrade.amount : 0;
                 currentMoneyPerClick += upgrade.clicks ? upgrade.clicks : 0;
@@ -335,6 +346,7 @@ function createCard(upgrade) {
             upgrade.cost *= 1.5;
             cost.textContent = 'Köp för ' + upgrade.cost + ' Guld';
             message('Grattis du har köpt en uppgradering!', 'success');
+            createUpgrades();
         }
          else {
             message('Du har inte råd.', 'warning');

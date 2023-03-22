@@ -1,11 +1,6 @@
 Potion Clicker
 ---
 
-Variables
----
-    Something.
-
-
 ---
 Potions, temp. effects
 ---
@@ -18,20 +13,20 @@ Potions, temp. effects
 ---
 Trinkets, perma. effects
 ---
-    Potion Belt - check
+    Potion Belt - Tier 1 - check
         Potion effects duration increase with x seconds.
 
-    Wabuu Keychain - check (partially)
+    Wabuu Keychain - Tier 2 - check (partially)
         Multiplies positive effects with 1.01.
         Reduces shop prices with 1.01.
         Secondary purchases after the first increases these valeus with 0.01.
 
 
-    Wabuu plush -
+    Wabuu plush - Tier 3 -
         Adds a Wabuu plush to the counter, activate him to have him click 10x per second for 10 seconds. This effect has a 5 second cooldown.
         Secondary purchases after the first reduces the cooldown.
 
-    Twitching Tentacle -
+    Twitching Tentacle - Tier 3 -
         Adds a very safe for work tentacle to the counter, it clicks once per second.
         secondary purchases increases the amount of times it clicks per second.
 
@@ -51,6 +46,9 @@ Shop upgrades, stat upgrades
     Furnace upgradde - Check
         + 100 per second.
 
+    Rare Finds - 
+        +1 trinket tier.
+
 
 ---
 Achivements
@@ -65,4 +63,4 @@ Byt ut bilder.
 Stylea text och färger.
 Lägg till upgradering för Potions och trinkets.
 Fixa till Acvhivements.
-Balancing^2.
+Balancing*e^sin(7/3).
