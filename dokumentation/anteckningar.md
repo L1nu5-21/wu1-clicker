@@ -13,7 +13,7 @@ Potions, temp. effects
     
 
 ---
-Trinkets, perma. effects
+Trinkets, perma. passice/active effects
 ---
     Potion Belt - Tier 1 - check
         Potion effects duration increase with x seconds.
@@ -23,7 +23,6 @@ Trinkets, perma. effects
         Reduces shop prices with 1.01.
         Secondary purchases after the first increases these valeus with 0.01.
 
-
     Wabuu plush - Tier 3 -
         Adds a Wabuu plush to the counter, activate him to have him click 10x per second for 10 seconds. This effect has a 5 second cooldown.
         Secondary purchases after the first reduces the cooldown.
@@ -32,6 +31,7 @@ Trinkets, perma. effects
         Adds a very safe for work tentacle to the counter, it clicks once per second.
         secondary purchases increases the amount of times it clicks per second.
 
+    
 
 ---
 Shop upgrades, stat/tier upgrades
@@ -72,6 +72,7 @@ Achivements
 
     Odd interests -
         Have the Twitching Tentacle earn 100+ gold per click.
+
 
 
 ---
