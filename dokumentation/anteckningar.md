@@ -71,7 +71,7 @@ Achivements
         Earn enough gold and reach the integer limit.
 
     Odd interests -
-        Have the Twitching Tentacle earn 100 gold per click.
+        Have the Twitching Tentacle earn 100+ gold per click.
 
 
 ---
