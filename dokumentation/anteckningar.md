@@ -10,6 +10,8 @@ Potions, temp. effects
     Stoutness Potion - check
         Increases clciks by x for a short duration.
 
+    
+
 ---
 Trinkets, perma. effects
 ---
@@ -32,7 +34,7 @@ Trinkets, perma. effects
 
 
 ---
-Shop upgrades, stat upgrades
+Shop upgrades, stat/tier upgrades
 ---
     Better Bottles - Check
         +1 per click.
@@ -53,7 +55,23 @@ Shop upgrades, stat upgrades
 ---
 Achivements
 ---
+    Potion enthusiast -
+        You've purchased 10 potions.
+    
+    Effect Addict -
+        Have all potion effects active at once.
 
+    Trinket Collector -
+        Purchase three different trinket.
+
+    A fine workshop -
+        Earn 10+ gold per click without potion effects.
+
+    Integer limit league! -
+        Earn enough gold and reach the integer limit.
+
+    Odd interests -
+        Have the Twitching Tentacle earn 100 gold per click.
 
 
 ---
