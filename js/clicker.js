@@ -118,7 +118,6 @@ var moneyCalc = function() {
 };
 
 
-
 /* För att driva klicker spelet så kommer vi att använda oss av en metod som heter
  * requestAnimationFrame.
  * requestAnimationFrame försöker uppdatera efter den refresh rate som användarens
