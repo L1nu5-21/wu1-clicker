@@ -206,7 +206,7 @@ audio {
 }
 
 .card:hover {
-    background-color: darkmagenta;
+    background-color: rgb(139, 0, 139);
 }
 
 .card p:not(.title) {
