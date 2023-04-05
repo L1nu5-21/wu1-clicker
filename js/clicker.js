@@ -25,7 +25,7 @@ const audioAchievement = document.querySelector('#swoosh');
  * värden, utan då använder vi let.
  * Läs mer: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let
  */
-let money = 100;
+let money = 0;
 let moneyPerClick = 1;
 let currentMoneyPerClick = 1;
 let currentClickMultiplier = 0;
@@ -84,14 +84,35 @@ let achievements = [
 clickerButton.addEventListener(
     'click',
     () => {
+        moneyCalc();
         // vid click öka score med moneyPerClick
-        money += Math.ceil(currentMoneyPerClick * (1+currentClickMultiplier));
+        money += Math.round(currentMoneyPerClick * (1+currentClickMultiplier));
         // håll koll på hur många gånger spelaren klickat
         numberOfClicks += 1;
         // console.log(clicker.score);
     },
     false
 );
+
+
+
+var moneyCalc = function() {
+    if(moneyCalc.done) return;
+    currentMoneyPerClick = 1;
+    for (let i = 0; i < upgrades.length; i++) {
+        if (upgrades[i].clicks) {
+            currentMoneyPerClick += upgrades[i].currentClicks;
+        }
+        if (upgrades[i].multiplier) {
+            currentClickMultiplier += upgrades[i].currentMultiplier;
+        }
+    }
+
+    console.log('Moneycalc executed.');
+    console.log(currentMoneyPerClick + ', ' + currentClickMultiplier);
+
+    moneyCalc.done = true;
+};
 
 
 
@@ -120,10 +141,16 @@ function step(timestamp) {
         active = true;
     }
 
-    if (upgrades[4].effectActive && upgrades[4].activeDuration != 0) {
-        currentClickMultiplier = upgrades[4].multiplier;
+    if (upgrades[5].effectActive && upgrades[5].activeDuration != 0) {
+        upgrades[5].currentAdder = upgrades[5].adder;
     } else {
-        currentClickMultiplier = clickMultiplier;
+        upgrades[5].currentAdder = 0;
+    }
+
+    if (upgrades[4].effectActive && upgrades[4].activeDuration != 0) {
+        upgrades[4].currentMultiplier = upgrades[4].multiplier;
+    } else {
+        upgrades[4].currentMultiplier = 0;
     }
 
     for (let i = 0; i < upgrades.length; i++) {
@@ -210,6 +237,7 @@ upgrades = [
         description: '',
         cost: 1,
         clicks: 1,
+        currentClicks: 0,
     },
     {
         name: 'Better Bottles',
@@ -237,6 +265,7 @@ upgrades = [
         activeDuration: 0,
         effectActive: false,
         multiplier: 0.1,
+        currentMultiplier: 0,
     },
     {
         name: 'Stoutness Potion',
@@ -309,7 +338,7 @@ function createCard(upgrade) {
 
     card.addEventListener('click', (e) => {
         if (money >= upgrade.cost) {
-            
+            moneyCalc.done = false;
             if (upgrade.duration) {
                 /*for (let i = 0; i < upgrades.length; i++) {
                     upgrades[i].effectActive = true;
@@ -339,12 +368,12 @@ function createCard(upgrade) {
                 console.log(upgrade.currentMultiPositive);
             } else {
                 moneyPerSecond += upgrade.amount ? upgrade.amount : 0;
-                currentMoneyPerClick += upgrade.clicks ? upgrade.clicks : 0;
+                upgrade.currentClicks += upgrade.clicks ? upgrade.clicks : 0;
             }
             acquiredUpgrades++;
             money -= upgrade.cost;
             upgrade.cost *= 1.5;
-            cost.textContent = 'Köp för ' + upgrade.cost + ' Guld';
+            cost.textContent = 'Köp för ' + Math.ceil(upgrade.cost) + ' Guld';
             message('Grattis du har köpt en uppgradering!', 'success');
             createUpgrades();
         }
@@ -357,8 +386,6 @@ function createCard(upgrade) {
     card.appendChild(cost);
     return card;
 }
-
-
 
 /* Message visar hur vi kan skapa ett html element och ta bort det.
  * appendChild används för att lägga till och removeChild för att ta bort.

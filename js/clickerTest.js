@@ -84,32 +84,35 @@ let achievements = [
 clickerButton.addEventListener(
     'click',
     () => {
+        moneyCalc();
         // vid click öka score med moneyPerClick
-        for (let i = 0; i < upgrades.length; i++) {
-            if (upgrades[i].currentAdder) {
-                currentMoneyPerClick += upgrades[i].currentAdder;
-                if (!upgrades[i].effectActive) {
-                    currentMoneyPerClick-= upgrades[i].currentAdder;
-                }
-                upgrades[i].currentAdder = 0;
-            }
-            if (upgrades[i].currentMultiplier) {
-                currentClickMultiplier += upgrades[i].currentMultiplier;
-                if (!upgrades[i].effectActive) {
-                    currentClickMultiplier -= upgrades[i].currentMultiplier;
-                }
-                upgrades[i].currentMultiplier = 0;
-            }
-        }
-        console.log(money);
-        money += Math.ceil(currentMoneyPerClick * (1+currentClickMultiplier));
-        console.log(money);
+        money += Math.round(currentMoneyPerClick * (1+currentClickMultiplier));
         // håll koll på hur många gånger spelaren klickat
         numberOfClicks += 1;
         // console.log(clicker.score);
     },
     false
 );
+
+
+
+var moneyCalc = function() {
+    if(moneyCalc.done) return;
+
+    for (let i = 0; i < upgrades.length; i++) {
+        if (upgrades[i].clicks) {
+            currentMoneyPerClick += upgrades[i].currentClicks;            
+        }
+        if (upgrades[i].multiplier) {
+            currentClickMultiplier += upgrades[i].currentMultiplier;
+        }
+    }
+
+    console.log('Moneycalc executed.');
+    console.log(currentMoneyPerClick + ', ' + currentClickMultiplier);
+
+    moneyCalc.done = true;
+};
 
 
 
@@ -138,16 +141,22 @@ function step(timestamp) {
         active = true;
     }
 
-    if (!upgrades[4].effectActive && upgrades[4].activeDuration === 0) {
-        /*upgrades[4].currentMultiplier = upgrades[4].multiplier;
-    } else {*/
+    if (upgrades[5].effectActive && upgrades[5].activeDuration != 0) {
+        upgrades[5].currentAdder = upgrades[5].adder;
+    } else {
+        upgrades[5].currentAdder = 0;
+    }
+
+    if (upgrades[4].effectActive && upgrades[4].activeDuration != 0) {
+        upgrades[4].currentMultiplier = upgrades[4].multiplier;
+    } else {
         upgrades[4].currentMultiplier = 0;
     }
 
     for (let i = 0; i < upgrades.length; i++) {
         if (upgrades[i].effectActive && upgrades[i].activeDuration > 0) {
             upgrades[i].activeDuration--;
-            console.log(upgrades[i].activeDuration);
+            //console.log(upgrades[i].activeDuration);
         } else {
             upgrades[i].activeDuration = upgrades[i].duration;
             upgrades[i].effectActive = false;
@@ -228,6 +237,7 @@ upgrades = [
         description: '',
         cost: 1,
         clicks: 1,
+        currentClicks: 0,
     },
     {
         name: 'Better Bottles',
@@ -254,7 +264,7 @@ upgrades = [
         duration: 300,
         activeDuration: 0,
         effectActive: false,
-        multiplier: 1,
+        multiplier: 0.1,
         currentMultiplier: 0,
     },
     {
@@ -265,7 +275,6 @@ upgrades = [
         activeDuration: 0,
         effectActive: false,
         adder: 3,
-        currentAdder: 0,
     },
     {
         name: 'Potion Belt',
@@ -329,20 +338,19 @@ function createCard(upgrade) {
 
     card.addEventListener('click', (e) => {
         if (money >= upgrade.cost) {
-            
+            moneyCalc.done = false;
             if (upgrade.duration) {
                 /*for (let i = 0; i < upgrades.length; i++) {
                     upgrades[i].effectActive = true;
                 }*/
                 if (upgrade.multiplier) {
-                    upgrade.currentMultiplier = upgrade.multiplier;
                     upgrade.effectActive = true;
                     console.log(upgrade.multiplier);
                 }
                 if (upgrade.adder) {
-                    upgrade.currentAdder = upgrade.adder;
+                    currentMoneyPerClick = moneyPerClick + upgrade.adder;
                     upgrade.effectActive = true;
-                    console.log(currentAdder);
+                    console.log(currentMoneyPerClick);
                 }
                 upgrades.activeDuration = upgrades.duration;
             } else if (upgrade.durationIncrease) {
@@ -360,7 +368,7 @@ function createCard(upgrade) {
                 console.log(upgrade.currentMultiPositive);
             } else {
                 moneyPerSecond += upgrade.amount ? upgrade.amount : 0;
-                currentMoneyPerClick += upgrade.clicks ? upgrade.clicks : 0;
+                upgrade.currentClicks += upgrade.clicks ? upgrade.clicks : 0;
             }
             acquiredUpgrades++;
             money -= upgrade.cost;

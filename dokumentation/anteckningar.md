@@ -83,3 +83,17 @@ Stylea text och färger.
 Lägg till upgradering för Potions och trinkets.
 Fixa till Acvhivements.
 Balancing*e^sin(7/3).
+
+
+---
+sheit
+---
+    <source srcset="img/ashleigh-joy-photography-uyRku9KF2N8-unsplash-resize.jpg">
+            <source srcset="img/ashleigh-joy-photography-uyRku9KF2N8-unsplash-resize.webp">
+            <source srcset="img/ashleigh-joy-photography-uyRku9KF2N8-unsplash-resize-s.webp">
+            <img src="img/ashleigh-joy-photography-uyRku9KF2N8-unsplash-resize.jpg" alt="">
+
+    <source srcset="img/Skärmbild.jpg">
+            <source srcset="img/ashleigh-joy-photography-uyRku9KF2N8-unsplash-resize.jpg">
+            <source srcset="img/ashleigh-joy-photography-uyRku9KF2N8-unsplash-resize.webp">
+            <source srcset="img/ashleigh-joy-photography-uyRku9KF2N8-unsplash-resize-s.webp">
