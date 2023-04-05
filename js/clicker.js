@@ -106,6 +106,9 @@ var moneyCalc = function() {
         if (upgrades[i].multiplier) {
             currentClickMultiplier += upgrades[i].currentMultiplier;
         }
+        if (upgrades[i].adder) {
+            currentMoneyPerClick += upgrades[i].currentAdder;
+        }
     }
 
     console.log('Moneycalc executed.');
