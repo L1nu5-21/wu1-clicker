@@ -57,4 +57,14 @@ Se classroom.
 
 GLHF!
 
+## infon
+
+{
+        title: 'Potion Clicker',
+        tagline: 'Brew potions and enjoy their effects while earning big off of em'.',
+        url: '[https://l1nu5-21.github.io/wu1-clicker/](https://l1nu5-21.github.io/wu1-clicker/)',
+        git: '[LÄNK TILL REPO](https://github.com/L1nu5-21/wu1-clicker)',
+        author: 'Linus'
+ },
+
 Tack [Malte](https://github.com/Mafrans) för lite ideér.
