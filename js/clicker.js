@@ -236,33 +236,33 @@ const createUpgrades = () => {
 upgrades = [
     {
         name: 'Incense Ingredients',
-        description: '',
+        description: 'Intense ingredients for Incenses',
         cost: 1,
         clicks: 1,
         currentClicks: 0,
     },
     {
-        name: 'Better Bottles',
-        description: '',
+        name: 'Bottl',
+        description: 'A botte... what did you expect?',
         cost: 10,
         amount: 1,
     },
     {
         name: 'Quality Cauldrons',
-        description: '',
+        description: 'The finest, highest quality Cauldron you can find on the open market!',
         cost: 10,
         amount: 10,
     },
     {
         name: 'Furnace upgrade',
-        description: '',
+        description: 'Is it hot in here or is it just me? No, it is just the furnace',
         cost: 1000,
         amount: 100,
     },
     {
         name: 'Spicy Tonic',
         description: 'Multiplies clicks for a short duration.  Current click multiplier is ',
-        cost: 1,
+        cost: 50,
         duration: 300,
         activeDuration: 0,
         effectActive: false,
@@ -272,7 +272,7 @@ upgrades = [
     {
         name: 'Stoutness Potion',
         description: 'Boosts clicks for a short duration.  Current click buff is +',
-        cost: 1,
+        cost: 10,
         duration: 600,
         activeDuration: 0,
         effectActive: false,
@@ -281,14 +281,14 @@ upgrades = [
     {
         name: 'Potion Belt',
         description: 'Potion effects duration increased. Current potion duration buff is +',
-        cost: 1,
+        cost: 50,
         effectActive: false,
         durationIncrease: 1, // in seconds
     },
     {
         name: 'Wabuu Keychain',
         description: 'Increases positive effects and reduces shop prices with 1%. Current buff is ',
-        cost: 1,
+        cost: 100,
         effectActive: false,
         multiPositive: 0.01,
         currentMultiPositive: 0,
